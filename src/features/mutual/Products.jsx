@@ -4,6 +4,7 @@ import mixedFund from "../../assets/images/mixedFund.png";
 import MutualCard from "../../components/MutualCard";
 import MutualProduct from "../products/MutualProduct";
 import Modal from "../../components/Modal";
+import Spinner from "../../components/Spinner";
 
 function Products() {
   const { isMutualProducts, mutualProducts } = useMutualProducts();
@@ -19,7 +20,7 @@ function Products() {
     <div>
       <div>
         {isMutualProducts ? (
-          "Loading..."
+          <Spinner />
         ) : mutualProducts.length === 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4 gap-5">
             <div className="relative opacity-60 cursor-not-allowed pointer-events-none">

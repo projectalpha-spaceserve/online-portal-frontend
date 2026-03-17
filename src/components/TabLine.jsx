@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
-export default function TabLine({ tabs, defaultIndex = 0 }) {
-  const [activeIndex, setActiveIndex] = useState(defaultIndex);
+export default function TabLine({ tabs, activeIndex = 0 }) {
+  const [, setSearchParams] = useSearchParams();
+
+  const handleTabClick = (tabName) => {
+    setSearchParams({ tab: tabName });
+  };
 
   return (
     <div className="w-full">
-      {/* Tab headers */}
+      {/* Tabs */}
       <div className="flex flex-nowrap overflow-x-auto border-b border-gray-200 scrollbar-hide">
         {tabs.map((tab, index) => (
           <button
-            key={index}
-            onClick={() => setActiveIndex(index)}
+            key={tab.name || index}
+            onClick={() => handleTabClick(tab.name)}
             className={`flex-shrink-0 px-4 py-2 text-xs font-medium whitespace-nowrap transition-colors duration-200
               ${
                 activeIndex === index
@@ -23,10 +27,8 @@ export default function TabLine({ tabs, defaultIndex = 0 }) {
         ))}
       </div>
 
-      {/* Tab content */}
-      <div className="mt-5">
-        {tabs[activeIndex] && tabs[activeIndex].content}
-      </div>
+      {/* Content */}
+      <div className="mt-5">{tabs[activeIndex]?.content}</div>
     </div>
   );
 }

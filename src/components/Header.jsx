@@ -2,7 +2,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import {
   HiArrowRightOnRectangle,
+  HiBars3,
   HiMiniIdentification,
+  HiOutlineXMark,
   HiUser,
 } from "react-icons/hi2";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -11,7 +13,7 @@ import logo from "../assets/images/logo.png";
 import { useUser } from "../features/auth/useUser";
 import { useSwitchAccounts } from "../features/profile/useSwitchAccounts";
 
-export default function Header() {
+export default function Header({ open, setOpen }) {
   const { user } = useUser();
   const { switchAccounts, isSwitchAccounts } = useSwitchAccounts();
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
@@ -24,9 +26,16 @@ export default function Header() {
 
   const linkedAccounts = user?.linked_symplus_ids;
   const hasMultipleAccounts = linkedAccounts?.length > 1;
+  const selectedCustomerId =
+    queryClient.getQueryData(["selectedAccount"]) ||
+    linkedAccounts?.[0]?.CUSTOMER_ID;
 
   const pageTitle =
     location.pathname.split("/").filter(Boolean).pop() || "dashboard";
+
+  function handleSwitchAccount(customerId) {
+    switchAccounts(customerId);
+  }
 
   const formattedTitle = pageTitle
     .replace(/-/g, " ")
@@ -85,8 +94,16 @@ export default function Header() {
   }, []);
 
   return (
-    <nav className="pb-5 bg-[#F9FAFB] px-8 py-2.5 z-50 sticky top-0">
-      <div className="flex items-center justify-end lg:justify-between gap-2 md:gap-16">
+    <nav className="pb-5 bg-[#F9FAFB] px-6 sm:px-8 py-2.5 z-50 sticky top-0">
+      <div className="flex items-center justify-between gap-3">
+        {/* MOBILE MENU BUTTON */}
+        <button
+          onClick={() => setOpen((prev) => !prev)}
+          className="lg:hidden rounded-md"
+        >
+          {open ? <HiOutlineXMark size={22} /> : <HiBars3 size={22} />}
+        </button>
+
         <div className="lg:flex items-center gap-3 hidden">
           <img src={icon} alt="menu icon" className="w-5 h-5" />
           <h1 className="font-medium text-xs">{formattedTitle}</h1>
@@ -98,8 +115,9 @@ export default function Header() {
             <>
               {/* Desktop Select */}
               <select
-                className="hidden md:block text-xs border border-brand-75 px-1 rounded-md py-2"
-                onChange={(e) => switchAccounts(e.target.value)}
+                value={selectedCustomerId || ""}
+                className="hidden md:block text-xs border border-brand-25 px-1 rounded-md py-2"
+                onChange={(e) => handleSwitchAccount(e.target.value)}
                 disabled={isSwitchAccounts}
               >
                 {linkedAccounts?.map((acc) => (
@@ -141,7 +159,7 @@ export default function Header() {
                         key={acc.CUSTOMER_ID}
                         className="w-full text-left px-4 py-2 text-xs hover:bg-gray-100"
                         onClick={() => {
-                          switchAccounts(acc.CUSTOMER_ID);
+                          handleSwitchAccount(acc.CUSTOMER_ID);
                           setIsMobileDropdownOpen(false);
                         }}
                       >

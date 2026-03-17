@@ -7,17 +7,18 @@ function PieChart({
   title,
   type = "donut",
   height = 200,
+  hasBalance,
 }) {
-  if (!Array.isArray(data) || data.length === 0) {
+  const series = data.map((item) => Number(item?.[valueKey] || 0));
+  const labels = data.map((item) => item?.[labelKey]);
+
+  if (!Array.isArray(data) || !hasBalance || data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[250px] text-gray-400 text-sm">
         No data available
       </div>
     );
   }
-
-  const series = data.map((item) => Number(item?.[valueKey] || 0));
-  const labels = data.map((item) => item?.[labelKey]);
 
   const options = {
     chart: {

@@ -12,15 +12,31 @@ import { useProfileDashboard } from "../features/profile/useProfileDashboard";
 import { useTransactions } from "../features/profile/useTransactions";
 import { useState } from "react";
 import Toggle from "../components/Toggle";
+import Skeleton from "../components/Skeleton";
+import { useQueryClient } from "@tanstack/react-query";
 
 function Dashboard() {
+  const queryClient = useQueryClient();
   const { user, isPending } = useUser();
   const { profileDashboard } = useProfileDashboard();
   const { isTransactions, transactions } = useTransactions();
+  const selectedCustomerId = queryClient.getQueryData(["selectedAccount"]);
 
   const [showBalance, setShowBalance] = useState(
     localStorage.getItem("showBalance") !== "false",
   );
+
+  const linkedAccounts = user?.linked_symplus_ids;
+  const hasMultipleAccounts = linkedAccounts?.length > 1;
+
+  const selectedAccount = linkedAccounts?.find(
+    (acc) => acc.CUSTOMER_ID === selectedCustomerId,
+  );
+
+  const switchFirstName = selectedAccount?.CUSTOMER_NAME?.split(" ")[1];
+
+  const displayName =
+    hasMultipleAccounts && switchFirstName ? switchFirstName : user?.first_name;
 
   const hasTransactions = transactions?.length > 0;
 
@@ -51,7 +67,11 @@ function Dashboard() {
     <div className="container-w">
       <section>
         <h1 className="pb-5 font-semibold">
-          {isPending ? "Loading..." : `Welcome, ${capitalize(user.first_name)}`}
+          {isPending ? (
+            <Skeleton className="h-6 w-40" />
+          ) : (
+            `Welcome, ${capitalize(displayName)}`
+          )}
         </h1>
         <div className="flex items-center justify-between">
           <div className="">
@@ -108,7 +128,12 @@ function Dashboard() {
 
           <div className="border border-brand-75 rounded-2xl p-8 lg:col-span-2">
             <h1 className="font-medium mb-4">Asset Distribution</h1>
-            <PieChart data={pieData} labelKey="label" valueKey="value" />
+            <PieChart
+              data={pieData}
+              hasBalance={hasBalance}
+              labelKey="label"
+              valueKey="value"
+            />
           </div>
         </section>
       )}

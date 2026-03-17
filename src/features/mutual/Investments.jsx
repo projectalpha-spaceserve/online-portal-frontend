@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useActiveMutuals } from "../portfolio/useActiveMutuals";
-import Spinner from "../../components/Spinner";
 import ActiveMutualCard from "../../components/ActiveMutualCard";
 import BtnOutline from "../../components/BtnOutline";
-import InvestMutual from "../portfolio/InvestMutual";
+import Modal from "../../components/Modal";
+import Spinner from "../../components/Spinner";
 import BankTransfer from "../portfolio/BankTransfer";
-import Successs from "../portfolio/Successs";
+import InvestMutual from "../portfolio/InvestMutual";
+import MutualInfo from "../portfolio/MutualInfo";
 import MutualLiquidate from "../portfolio/MutualLiquidate";
 import MutualStatement from "../portfolio/MutualStatement";
-import Modal from "../../components/Modal";
-import MutualInfo from "../portfolio/MutualInfo";
+import Successs from "../portfolio/Successs";
+import { useActiveMutuals } from "../portfolio/useActiveMutuals";
 
 function Investments() {
   const navigate = useNavigate();
@@ -57,7 +57,9 @@ function Investments() {
                   You currently do not have any active investment products.
                   Start investing today to grow your portfolio.
                 </p>
-                <BtnOutline onClick={() => navigate("/mutual-funds")}>
+                <BtnOutline
+                  onClick={() => navigate("/mutual-funds?tab=products")}
+                >
                   Explore Investment Options
                 </BtnOutline>
               </div>

@@ -2,11 +2,11 @@ import { useForm } from "react-hook-form";
 import Btn from "../../components/Btn";
 import BtnOutline from "../../components/BtnOutline";
 import ErrorMessage from "../../components/ErrorMessage";
-import { useLinkedAccounts } from "../profile/useLinkedAccounts";
+import { useUser } from "../auth/useUser";
 import { usePortfolioSummary } from "./usePortfolioSummary";
 
 function PortfolioSummary({ onClose }) {
-  const { isLinkedAccounts, linkedAccounts } = useLinkedAccounts();
+  const { isPending, user } = useUser();
   const { isPortfolioSummary, portfolioSummary } = usePortfolioSummary();
   const {
     register,
@@ -16,6 +16,8 @@ function PortfolioSummary({ onClose }) {
   } = useForm({
     mode: "onChange",
   });
+
+  const linkedAccounts = user?.linked_symplus_ids;
 
   function onSubmit(payload) {
     const fund_id = payload.fund_id;
@@ -37,7 +39,7 @@ function PortfolioSummary({ onClose }) {
             Investment
           </label>
           <select
-            disabled={isLinkedAccounts}
+            disabled={isPending}
             className="mt-1 border block w-full rounded-md border-brand-825 p-2 text-sm outline-none"
             {...register("fund_id", {
               required: "Please select the investment",

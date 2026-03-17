@@ -2,7 +2,7 @@ import { HiArrowRight } from "react-icons/hi";
 import naira from "../assets/icons/naira.png";
 import { formatProductDescription } from "../constants/helper";
 
-function ActiveInvestCard({ data, onClick }) {
+function ActiveInvestCard({ data, onClick, name }) {
   const { code } = formatProductDescription(data.PRODUCT_DESC);
 
   return (
@@ -17,9 +17,12 @@ function ActiveInvestCard({ data, onClick }) {
         </div>
         <div>
           <h1 className="text-brand-400 font-semibold">{code}</h1>
-          <p className="text-xs font-medium">
-            Investment Balance: ₦{data.CURRENT_BALANCE_AMOUNT}
-          </p>
+          <div>
+            <p className="text-xs font-medium -mb-1.5">
+              Investment Balance: ₦{data.CURRENT_BALANCE_AMOUNT}
+            </p>
+            <span className="text-[10px]">{name}</span>
+          </div>
         </div>
       </div>
       <div className="justify-self-end-safe bg-white h-5 md:h-10 p-3 md:p-5 flex items-center mr-0.5 mb-0.5 rounded-tl-4xl">

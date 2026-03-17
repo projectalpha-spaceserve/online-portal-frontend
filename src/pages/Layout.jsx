@@ -19,20 +19,21 @@ export default function Layout() {
   useAutoLogout(logout, 120000);
 
   return (
-    <div className="flex">
-      <Sidebar open={open} setOpen={setOpen} />
-      <main
-        className={`
+    <div>
+      <div className="flex">
+        <Sidebar open={open} setOpen={setOpen} />
+        <main
+          className="
     flex-1 min-w-0 bg-white min-h-screen
-    transition-all duration-300 ease-in-out
-    ${open ? "lg:ml-58" : "lg:ml-16"}
-  `}
-      >
-        <Header setOpen={setOpen} />
-        <div className="py-8 px-6 lg:px-8">
-          <Outlet />
-        </div>
-      </main>
+    transition-all duration-300 ease-in-out lg:ml-50 
+  "
+        >
+          <Header open={open} setOpen={setOpen} />
+          <div className="py-8 px-6 lg:px-8">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

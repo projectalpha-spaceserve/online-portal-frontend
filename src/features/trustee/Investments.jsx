@@ -9,6 +9,7 @@ import TopupTrust from "../portfolio/TopupTrust";
 import TrustInfo from "../portfolio/TrustInfo";
 import TrustLiquidate from "../portfolio/TrustLiquidate";
 import { useActiveTrusts } from "../portfolio/useActiveTrusts";
+import { formattedName } from "../../constants/helper";
 
 function Investments() {
   const navigate = useNavigate();
@@ -28,10 +29,11 @@ function Investments() {
       ) : (
         <div className="flex flex-col gap-5">
           {activeInvestments?.length > 0 ? (
-            activeInvestments.map((trust) => (
+            activeInvestments.map((trust, i) => (
               <ActiveInvestCard
-                key={trust.FUND_ID}
+                key={i}
                 data={trust}
+                name={formattedName(trust.CUSTOMER_NAME)}
                 onClick={() => handleCardClick(trust)}
               />
             ))
@@ -44,7 +46,7 @@ function Investments() {
                 You currently do not have any active investment products. Start
                 investing today to grow your portfolio.
               </p>
-              <BtnOutline onClick={() => navigate("/trustees")}>
+              <BtnOutline onClick={() => navigate("/trustees?tab=products")}>
                 Explore Investment Options
               </BtnOutline>
             </div>

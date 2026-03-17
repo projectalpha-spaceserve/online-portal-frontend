@@ -8,7 +8,7 @@ function TransactionCard({ type, amount, description }) {
     >
       <div className="flex items-center justify-between gap-5">
         <span
-          className={`p-1.5 rounded-full text-white text-xs ${type === "credit" ? "bg-[#1D4D4F]" : "bg-brand-400"}`}
+          className={`p-1 rounded-full text-white text-lg ${type === "credit" ? "bg-[#1D4D4F]" : "bg-brand-400"}`}
         >
           {type === "credit" ? <HiArrowLongDown /> : <HiArrowLongUp />}
         </span>

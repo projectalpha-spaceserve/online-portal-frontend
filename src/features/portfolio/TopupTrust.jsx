@@ -83,20 +83,6 @@ function TopupTrust({ data, onClose }) {
           {errors.amount && <ErrorMessage errorText={errors.amount.message} />}
         </div>
 
-        <div className="mb-5">
-          <lable className="text-xs font-medium text-brand-850">Tenor</lable>
-
-          <select
-            disabled={isTopupTrust}
-            className="mt-1 border block w-full rounded-md border-brand-825 p-2 text-sm outline-none"
-            {...register("tenor", { required: "Please select tenor" })}
-          >
-            <option value="90">90 days</option>
-            <option value="180">180 days</option>
-            <option value="360">360 days</option>
-          </select>
-          {errors.tenor && <ErrorMessage errorText={errors.tenor.message} />}
-        </div>
         <div className="flex justify-center gap-5">
           <Btn disabled={isTopupTrust}>
             {isTopupTrust ? <SpinnerMini /> : "Make payment"}

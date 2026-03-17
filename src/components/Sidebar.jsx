@@ -1,14 +1,5 @@
 import { FaHandsHelping } from "react-icons/fa";
-import {
-  HiBars3,
-  HiBars3BottomLeft,
-  HiBars3BottomRight,
-  HiHome,
-  HiMiniClock,
-  HiOutlineXMark,
-  HiUser,
-  HiUserGroup,
-} from "react-icons/hi2";
+import { HiHome, HiMiniClock, HiUser, HiUserGroup } from "react-icons/hi2";
 import { RiFundsFill, RiStockFill } from "react-icons/ri";
 import { NavLink, useLocation } from "react-router-dom";
 import { COMPLETED_STATUS, isKycFullyCompleted } from "../constants/helper";
@@ -40,54 +31,23 @@ export default function Sidebar({ open, setOpen }) {
 
   return (
     <>
-      {/* 🔥 Mobile Hamburger (fixed top left) */}
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed top-5 left-5 z-80 lg:hidden bg-[#F9FAFB] p-2"
-      >
-        <HiBars3 size={26} />
-      </button>
-
       {/* 🔥 Mobile Overlay */}
       {open && (
         <div
           onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/40 z-60 lg:hidden"
+          className="fixed inset-0 bg-black/40 z-30 lg:hidden"
         />
       )}
 
       {/* 🔥 Sidebar */}
       <aside
         className={`
-    fixed top-0 left-0 h-screen
-    bg-[#F9FAFB] text-black
-    transition-all duration-300 ease-in-out
-    z-50
-    ${open ? "translate-x-0" : "-translate-x-full"}
-    lg:translate-x-0
-    ${open ? "lg:w-58" : "lg:w-16"}
-  `}
+  fixed top-0 left-0 h-screen bg-[#F9FAFB] text-black pt-[20%] sm:pt-[14%] md:pt-[11%] lg:pt-[8%]
+  transition-transform duration-300 ease-in-out z-40
+  lg:translate-x-0 lg:w-50
+  ${open ? "translate-x-0" : "-translate-x-full"}
+`}
       >
-        {/* Header Section */}
-        <div className="flex items-center justify-between px-5 py-5">
-          {/* Mobile Close */}
-          <button onClick={() => setOpen(false)} className="lg:hidden">
-            <HiOutlineXMark size={24} />
-          </button>
-
-          {/* Desktop Collapse */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="hidden lg:block cursor-pointer"
-          >
-            {open ? (
-              <HiBars3BottomRight size={22} />
-            ) : (
-              <HiBars3BottomLeft size={22} />
-            )}
-          </button>
-        </div>
-
         {/* Navigation */}
         <nav className="px-5 lg:px-3 py-4">
           <ul className="flex flex-col gap-2">
@@ -112,9 +72,7 @@ export default function Sidebar({ open, setOpen }) {
                     }`}
                   >
                     <span className="text-xl">{icon}</span>
-                    <span className={`${!open ? "hidden" : ""} text-xs`}>
-                      {name}
-                    </span>
+                    <span className="text-xs">{name}</span>
                   </NavLink>
                 </li>
               );

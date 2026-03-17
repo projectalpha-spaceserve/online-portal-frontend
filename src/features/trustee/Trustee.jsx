@@ -7,14 +7,17 @@ import Investments from "./Investments";
 import Products from "./Products";
 import Modal from "../../components/Modal";
 import PortfolioSummary from "../portfolio/PortfolioSummary";
+import { useSearchParams } from "react-router-dom";
 
 const tabItems = [
   {
     label: "Trustee Product",
+    name: "products",
     content: <Products />,
   },
   {
     label: "Active Investments",
+    name: "investments",
     content: <Investments />,
   },
 ];
@@ -22,6 +25,13 @@ const tabItems = [
 function Trustee() {
   const { activeTrusts } = useActiveTrusts();
   const [modalType, setModalType] = useState(null);
+
+  const [searchParams] = useSearchParams();
+  const tab = searchParams.get("tab");
+
+  const activeIndex = tabItems.findIndex((t) => t.name === tab);
+
+  const currentIndex = activeIndex === -1 ? 1 : activeIndex;
 
   const balance = activeTrusts?.trust_balance;
 
@@ -43,7 +53,7 @@ function Trustee() {
       </div>
 
       <div className="mt-8">
-        <TabLine tabs={tabItems} />
+        <TabLine tabs={tabItems} activeIndex={currentIndex} />
       </div>
 
       {modalType && (
