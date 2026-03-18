@@ -7,6 +7,10 @@ import OnBoard from "../../components/OnBoard";
 import SpinnerMini from "../../components/SpinnerMini";
 import { useExistingRegister } from "./useExistingRegister";
 import ErrorMessage from "../../components/ErrorMessage";
+import Modal from "../../components/Modal";
+import Terms from "./Terms";
+import Privacy from "./Privacy";
+import CustomerConsent from "./CustomerConsent";
 
 function ExistingRegister() {
   const customerId = sessionStorage.getItem("customer_id");
@@ -14,6 +18,7 @@ function ExistingRegister() {
   const { existingRegisterUser, isExistingRegistering } = useExistingRegister();
   const [openPassword, setOpenPassword] = useState(false);
   const [openConfirm, setConfirm] = useState(false);
+  const [modalStep, setModalStep] = useState(null);
 
   const { email, otp } = location.state || {};
 
@@ -37,6 +42,11 @@ function ExistingRegister() {
     // console.log(payload);
     existingRegisterUser(payload, { onSettled: () => reset() });
   }
+
+  const handleCardClick = (info) => {
+    setModalStep(info);
+  };
+
   return (
     <OnBoard title="Register">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -139,15 +149,18 @@ function ExistingRegister() {
               })}
             />
 
-            <label htmlFor="terms" className="text-xs text-gray-600">
+            <label
+              htmlFor="terms"
+              className="text-xs text-gray-600 leading-relaxed"
+            >
               I/We have read and I/We agree to the{" "}
-              <a
-                href="https://www.samtlng.com/terms-and-condition"
-                target="_blank"
+              <span
+                role="button"
+                onClick={() => handleCardClick("terms")}
                 className="font-semibold"
               >
                 Terms and Conditions Agreement
-              </a>
+              </span>
             </label>
           </div>
 
@@ -165,15 +178,18 @@ function ExistingRegister() {
               })}
             />
 
-            <label htmlFor="privacy" className="text-xs text-gray-600">
+            <label
+              htmlFor="privacy"
+              className="text-xs text-gray-600 leading-relaxed"
+            >
               I/We have read and I/We agree to the{" "}
-              <a
-                href="https://www.samtlng.com/privacy-policy"
-                target="_blank"
+              <span
+                role="button"
+                onClick={() => handleCardClick("privacy")}
                 className="font-semibold"
               >
                 Data Privacy Agreement
-              </a>
+              </span>
             </label>
           </div>
 
@@ -189,19 +205,22 @@ function ExistingRegister() {
               id="indemnity"
               className="mt-1 accent-[#a62629]"
               {...register("indemnity", {
-                required: "You must accept the email indemnity agreement",
+                required: "You must accept the customer's consent agreement",
               })}
             />
 
-            <label htmlFor="indemnity" className="text-xs text-gray-600">
+            <label
+              htmlFor="indemnity"
+              className="text-xs text-gray-600 leading-relaxed"
+            >
               I/We have read and I/We agree to the{" "}
-              <a
-                href="https://sterlingassetng-my.sharepoint.com/:b:/g/personal/it_sterlingassetng_com2/IQBT77gNY84yQb2_uF8trab9Af3npEiXhN1QMUipChs3j0s?e=FdLcfG"
-                target="_blank"
+              <span
+                role="button"
+                onClick={() => handleCardClick("customer")}
                 className="font-semibold"
               >
-                Email Indemnity Agreement
-              </a>
+                Customer's Consent Agreement
+              </span>
             </label>
           </div>
 
@@ -214,6 +233,14 @@ function ExistingRegister() {
           {isExistingRegistering ? <SpinnerMini /> : "Register"}
         </FormBtn>
       </form>
+
+      {modalStep && (
+        <Modal onClose={() => setModalStep(null)}>
+          {modalStep === "terms" && <Terms />}
+          {modalStep === "privacy" && <Privacy />}
+          {modalStep === "customer" && <CustomerConsent />}
+        </Modal>
+      )}
     </OnBoard>
   );
 }
